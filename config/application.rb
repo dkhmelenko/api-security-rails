@@ -29,7 +29,7 @@ module SecureApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = false
 
-    config.session_store :cookie_store, key: 'api_app_session'
+    config.session_store :cookie_store, key: "api_app_session"
     config.middleware.use ActionDispatch::Session::CookieStore
   end
 end
