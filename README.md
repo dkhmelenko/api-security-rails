@@ -1,1 +1,3 @@
-# api-security-rails
+# README
+
+Simple application for API security workshop.
