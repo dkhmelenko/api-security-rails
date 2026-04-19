@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    user = User.new(params[:user])
+    user = User.new(params[:user].permit!)
 
     if user.save
       render json: user, status: :created, location: user
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     user = User.find(params[:id])
-    if user.update(params[:user])
+    if user.update(params[:user].permit!)
       render json: user
     else
       render json: user.errors, status: :unprocessable_entity
