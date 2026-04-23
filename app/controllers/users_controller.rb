@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: %i[show update destroy]
+  before_action :authorize_self!, only: %i[show update destroy]
+
   # GET /users
   def index
     users = User.all
@@ -8,33 +11,37 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    user = User.find(params[:id])
-    render json: user
-  end
-
-  # POST /users
-  def create
-    user = User.new(params[:user].permit!)
-
-    if user.save
-      render json: user, status: :created, location: user
-    else
-      render json: user.errors, status: :unprocessable_entity
-    end
+    render json: @user
   end
 
   # PATCH/PUT /users/1
   def update
-    user = User.find(params[:id])
-    if user.update(params[:user].permit!)
-      render json: user
+    if @user.update(user_params)
+      render json: @user
     else
-      render json: user.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   def destroy
-    User.find(params[:id]).destroy!
+    @user.destroy!
+    head :no_content
+  end
+
+  private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def authorize_self!
+    return if @user == current_user
+
+    head :forbidden
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email)
   end
 end
