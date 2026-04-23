@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :users,
              path: "auth",
              defaults: { format: :json },
-             controllers: { registrations: "users/registrations" }
+             controllers: {
+               registrations: "users/registrations",
+               sessions: "users/sessions"
+             }
 
   resources :users, only: %i[index show update destroy]
 

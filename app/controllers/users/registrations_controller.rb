@@ -2,6 +2,12 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     respond_to :json
 
+    protected
+
+    def sign_up(resource_name, resource)
+      sign_in(resource_name, resource, store: false)
+    end
+
     private
 
     def sign_up_params
